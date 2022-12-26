@@ -1,0 +1,23 @@
+{
+  "name": "movie-db",
+  "version": "1.0.0",
+  "description": "movie-db-project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdelhadicodi/Movie-DB.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdelhadicodi/Movie-DB/issues"
+  },
+  "homepage": "https://github.com/abdelhadicodi/Movie-DB#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
