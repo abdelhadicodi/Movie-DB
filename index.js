@@ -45,16 +45,19 @@ else if (test1 == "search"){
         res.send(search)
     }
 }
-else if (test1 == "movies"){
-     test2 == "create"
-    ? res.send("create movie")
-    : test2 == "read"
-    ? res.send ({status:200, data:movies})
-    : test2 == "update"
-    ? res.send ("update movie")
-    : test2 == "delete"
-    ? res.send("delete movie")
-    : res.send("choose what you need from movies (create, read, update, delete)")
+if (test1 == "movies" && test2 == "create"){
+      res.send("create movie")
+ }
+else if (test1 == "movies" && test2 == "read"){
+      res.send ({status:200, data:movies})
+ }
+else if (test1 == "movies" && test2 == "update"){
+     res.send ("update movie")
+ }
+else if (test1 == "movies" && test2 == "delete"){
+     res.send("delete movie")}
+else if (test1 == "movies" && test2 == undefined){
+    res.send("choose what you need from movies (create, read, update, delete)")
 }
 })
 
