@@ -12,7 +12,7 @@ app.get('/test', (req, res) => {
   res.send(answers)
 });
 app.get('/time', (req,res) =>{
-    let date = Date();
+    let date = new Date();
     let time = `${date.getHours()}:${date.getMinutes()}`;
     let answers = {status:200, message:time};
     res.send (answers);
