@@ -8,10 +8,11 @@ const movies = [
     { title: 'Brazil', year: 1985, rating: 8 },
     { title: 'الارهاب و الكباب', year: 1992, rating: 6.2 }
 ]
-app.get('/:test1?/:test2?/:test3?', (req,res) =>{
+app.get('/:test1?/:test2?/:test3?/:test4?', (req,res) =>{
     let test1 = req.params.test1;
     let test2 = req.params.test2;
-    let test3 =req.params.test3;
+    let test3 = req.params.test3;
+    let test4 = req.params.test4;
 
 if (test1 == undefined){
     res.send("ok");
@@ -80,6 +81,17 @@ if (test1 == "movies" && test2 == "read"){
                     return 0;
                 })
             } 
+    else if (test3 == "id") {
+        if (test4 == undefined) {
+            res.send("enter an available id")
+             } 
+        else if (test4<=0 || test4>movies.length || test4 != parseInt ){
+            res.send({status:404, error:true, message:`the movie with id ${test4} does not exist `})
+             }
+        else {
+             res.send({ status: 200, data: movies[test4 - 1] })
+             }
+        }
     }
 
 })
