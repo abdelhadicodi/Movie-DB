@@ -48,7 +48,24 @@ else if (test1 == "search"){
     }
 }
 if (test1 == "movies" && test2 == "create"){
-      res.send("create movie")}
+        var title = req.query.title;
+        var year = req.query.year;
+        var yearDig = year.toString().length;
+        var newmovie;
+    if (title == undefined || year == undefined || yearDig != 4) {
+        res.send({status:404, error:true, message:`you cannot create a movie without providing a title and a year`});
+        } 
+    else {
+        if ( req.query.rating == undefined || req.query.rating >10){
+            newmovie = { title: req.query.title, year: req.query.year, rating: 4 };
+        } 
+        else {
+            newmovie = {title: req.query.title, year: req.query.year, rating: req.query.rating};
+        }
+        }
+        movies.push(newmovie);
+        res.send(movies);  
+    }
         else if (test1 == "movies" && test2 == "update"){
           res.send ("update movie")}
         else if (test1 == "movies" && test2 == "delete"){
