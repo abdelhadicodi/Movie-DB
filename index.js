@@ -40,7 +40,7 @@ app.get('/search',(req,res)=>{
                  res.send(search)
              }
     })
-app.get('/movies/create',(req,res)=>{
+app.post('/movies/create',(req,res)=>{
             var title = req.query.title;
             var year = req.query.year;
             var yearDig = year.toString().length;
@@ -102,7 +102,7 @@ app.get('/movies/read/:test3?/:test4?',(req,res)=>{
                     }
                 }
     })
-app.get('/movies/delete/:test3?',(req,res)=>{
+app.delete('/movies/delete/:test3?',(req,res)=>{
     let test3 = req.params.test3;
         if(test3 == undefined || test3 < 0 || test3 > movies.length){
             res.status(404)
@@ -113,7 +113,7 @@ app.get('/movies/delete/:test3?',(req,res)=>{
             res.send({data: movies})
         }
     })        
-app.get('/movies/update/:test3',(req,res)=>{
+app.put('/movies/update/:test3',(req,res)=>{
     let test3 = req.params.test3;
     if(test3>movies.length){
         res.send({message: `id ${test3} is not available`})
