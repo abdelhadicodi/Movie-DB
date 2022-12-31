@@ -104,16 +104,28 @@ app.get('/movies/read/:test3?/:test4?',(req,res)=>{
     })
 app.get('/movies/delete/:test3?',(req,res)=>{
     let test3 = req.params.test3;
-        if(test3 == undefined || test3 < 0){
-            res.status(404
-            .send({status:404, error:true, message: `the movie ${test3} does not exist`}))
+        if(test3 == undefined || test3 < 0 || test3 > movies.length){
+            res.status(404)
+            .send({status:404, error:true, message: `the movie ${test3} does not exist`})
         }
         else{
             movies.splice(test3 -1,1 );
             res.send({data: movies})
         }
     })        
-
+app.get('/movies/update/:test3',(req,res)=>{
+    let test3 = req.params.test3;
+    if(test3>movies.length){
+        res.send({message: `id ${test3} is not available`})
+    }
+    else{
+        var newmovie = movies[test3 - 1]
+        if (req.query.title) newmovie.title = req.query.title;
+        if (req.query.rating) newmovie.rating = req.query.rating;
+        if (req.query.year) newmovie.year = req.query.year;
+        res.send({data: movies })
+    }
+})
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 })
