@@ -8,72 +8,61 @@ const movies = [
     { title: 'Brazil', year: 1985, rating: 8 },
     { title: 'الارهاب و الكباب', year: 1992, rating: 6.2 }
 ]
-app.get('/:test1?/:test2?/:test3?/:test4?', (req,res) =>{
-    let test1 = req.params.test1;
-    let test2 = req.params.test2;
-    let test3 = req.params.test3;
-    let test4 = req.params.test4;
-
-if (test1 == undefined){
-    res.send("ok");
-}   
-else if (test1 == "test"){
-    const answers ={
-        status:200,
-        message:"ok"
-    };
+app.get('/',(req,res)=>{
+    res.send("ok")
+    })
+app.get('/test',(req,res)=>{
+    const answers = {
+        status:200 , message:"ok"
+    }
     res.send(answers)
-}
-else if (test1 == "time"){
+    })
+app.get('/time',(req,res)=>{
     let date = new Date();
     let time = `${date.getHours()}:${date.getMinutes()}`;
     let answers = {status:200, message:time};
     res.send (answers);
-}
-else if (test1 == "hello"){
-    test2 == undefined
-   ? res.send({ status: 200, message: "Hello"})
-   : res.send({status:200,message:`Hello, ${test2}`})
-}
-
-else if (test1 == "search"){
-    if (test1 == "search" && test2 == undefined){
+    })
+app.get('/hello/:test2',(req,res)=>{
+    let test2 = req.params.test2;
+        test2 == undefined
+    ? res.send({ status: 200, message: "Hello"})
+    : res.send({status:200,message:`Hello, ${test2}`});
+    })
+app.get('/search',(req,res)=>{
+    if (req.query.s == "" || req.query.s == undefined) {
         let search = {status:500, message:"you have to provide a search"}
-        res.send(search)
-        
-    }
-    else{
-        let search = { status:200 , message: "ok"};
-        res.send(search)
-    }
-}
-if (test1 == "movies" && test2 == "create"){
-        var title = req.query.title;
-        var year = req.query.year;
-        var yearDig = year.toString().length;
-        var newmovie;
+            res.status(500)
+            res.send(search)    
+            }
+             else{
+                 let search = { status:200 , message: "ok" };
+                 res.send(search)
+             }
+    })
+app.get('/movies/create',(req,res)=>{
+            var title = req.query.title;
+            var year = req.query.year;
+            var yearDig = year.toString().length;
+            var newmovie;
     if (title == undefined || year == undefined || yearDig != 4) {
-        res.send({status:404, error:true, message:`you cannot create a movie without providing a title and a year`});
-        } 
+            res.status(403)
+            .send({status:403, error:true, message:`you cannot create a movie without providing a title and a year`});
+            } 
     else {
-        if ( req.query.rating == undefined || req.query.rating >10){
+    if (    req.query.rating == undefined || req.query.rating >10){
             newmovie = { title: req.query.title, year: req.query.year, rating: 4 };
         } 
-        else {
+    else{
             newmovie = {title: req.query.title, year: req.query.year, rating: req.query.rating};
         }
-        }
-        movies.push(newmovie);
-        res.send(movies);  
-    }
-        else if (test1 == "movies" && test2 == "update"){
-          res.send ("update movie")}
-        else if (test1 == "movies" && test2 == "delete"){
-          res.send("delete movie")}
-        else if (test1 == "movies" && test2 == undefined){
-          res.send("choose what you need from movies (create, read, update, delete)")}  
-
-if (test1 == "movies" && test2 == "read"){
+            }
+            movies.push(newmovie);
+            res.send(movies);  
+    })
+app.get('/movies/read/:test3?/:test4?',(req,res)=>{
+    let test3 = req.params.test3;
+    let test4 = req.params.test4;
         if (test3 == undefined){
             res.send({status:200, data:movies})}
         else if (test3 == "by-date"){
@@ -81,37 +70,49 @@ if (test1 == "movies" && test2 == "read"){
             movieorder = movies.sort((a,b)=>{
                 return a.year - b.year;
             });
-            }
-        else if (test3 == "by-rating"){
+        }
+    
+                
+        if (test3 == "by-rating"){
             movieorder = movies.sort((a, b) =>{
                 return b.rating - a.rating
             });
-            }
-        else if (test3 == "by-title"){
+                }
+        if (test3 == "by-title"){
             movieorder = movies.sort((a, b) =>{
                 if (a.title <  b.title){
                     return -1;
-                    }
+                        }
                 if (a.title > b.title){
                     return 1;
-                    }
+                        }
                     return 0;
-                })
-            } 
-    else if (test3 == "id") {
-        if (test4 == undefined) {
-            res.send("enter an available id")
-             } 
-        else if (test4<=0 || test4>movies.length || test4 != parseInt ){
-            res.send({status:404, error:true, message:`the movie with id ${test4} does not exist `})
-             }
-        else {
-             res.send({ status: 200, data: movies[test4 - 1] })
-             }
+                        })
+                    } 
+        if (test3 == "id") {
+            if (test4 == undefined) {
+                res.send("enter an available id")
+                    } 
+            else if (test4<=0 || test4>movies.length){
+                res.status(404)
+                .send({status:404, error:true, message:`the movie with id ${test4} does not exist `})
+                    }
+            else{
+                res.send({ status: 200, data: movies[test4 - 1] })
+                    }
+                }
+    })
+app.get('/movies/delete/:test3?',(req,res)=>{
+    let test3 = req.params.test3;
+        if(test3 == undefined || test3 < 0){
+            res.status(404
+            .send({status:404, error:true, message: `the movie ${test3} does not exist`}))
         }
-    }
-
-})
+        else{
+            movies.splice(test3 -1,1 );
+            res.send({data: movies})
+        }
+    })        
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
